@@ -44,22 +44,21 @@ func (N *Nonogram) Gen(level string) {
 	N.FillRowsAndCols()
 }
 
-// TODO buggzhou
-// 根据二维数组，填充  行列展示数字
 func (N *Nonogram) FillRowsAndCols() {
-	rows := make([][]int, 0)
-	cols := make([][]int, 0)
-	N.Rows = rows
-	N.Cols = cols
+	N.Rows, N.Cols = countConsecutiveOnes(N.Grid)
 }
 
 func (N *Nonogram) Display() {
+	fmt.Printf("grid is: \n")
 	for _, v := range N.Grid {
 		for _, vv := range v {
 			fmt.Printf("%d ", vv)
 		}
 		fmt.Printf("\n")
 	}
+	fmt.Printf("rows is: %v\n", N.Rows)
+	fmt.Printf("cols is: %v\n", N.Cols)
+
 }
 
 // TODO buggzhou
@@ -154,4 +153,45 @@ func swapCols(matrix [][]int) {
 	for i := 0; i < len(matrix); i++ {
 		matrix[i][c1], matrix[i][c2] = matrix[i][c2], matrix[i][c1]
 	}
+}
+
+func countConsecutiveOnes(grid [][]int) ([][]int, [][]int) {
+	n := len(grid)
+	rows := make([][]int, n)
+	cols := make([][]int, n)
+
+	// 统计每行连续的1
+	for i := 0; i < n; i++ {
+		rows[i] = countConsecutive(grid[i])
+	}
+
+	// 统计每列连续的1
+	for j := 0; j < n; j++ {
+		col := make([]int, n)
+		for i := 0; i < n; i++ {
+			col[i] = grid[i][j]
+		}
+		cols[j] = countConsecutive(col)
+	}
+
+	return rows, cols
+}
+
+func countConsecutive(array []int) []int {
+	var result []int
+	count := 0
+	for _, val := range array {
+		if val == 1 {
+			count++
+		} else {
+			if count > 0 {
+				result = append(result, count)
+				count = 0
+			}
+		}
+	}
+	if count > 0 {
+		result = append(result, count)
+	}
+	return result
 }
