@@ -20,4 +20,13 @@ gantt
     section 2. 2048
     初次提交 :b1, 2024-06-03, 1d
     优化逻辑 :b2, 2024-06-04, 1d
+
+    section 3. 2048-py
+    KIMI生成 :b1, 2024-06-14, 1d
+
+    section 4. Nonogram
+    初次提交 :b1, 2024-06-14, 1d
+
+    section 5. shudu
+    想法提出 :b1, 2024-06-14, 1d
 ```
