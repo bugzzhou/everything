@@ -14,9 +14,10 @@ type NonogramInterface interface {
 }
 
 type Nonogram struct {
-	Rows [][]int `json:"rows"`
-	Cols [][]int `json:"cols"`
-	Grid [][]int `json:"grid"`
+	Rows     [][]int `json:"rows"`
+	Cols     [][]int `json:"cols"`
+	Grid     [][]int `json:"grid"`
+	FillGrid [][]int `json:"fillGrid"`
 }
 
 // 声明的接口类
@@ -42,6 +43,10 @@ func (N *Nonogram) Gen(level string) {
 
 	N.Grid = genGrid(n, is)
 	N.FillRowsAndCols()
+
+	// TODO bugzzhou
+	// grid为原始数组，fillGrid为手动填充，暂时就直接copy过来
+	N.FillGrid = copyMatrix(N.Grid)
 }
 
 func (N *Nonogram) FillRowsAndCols() {
@@ -52,7 +57,22 @@ func (N *Nonogram) Display() {
 	fmt.Printf("grid is: \n")
 	for _, v := range N.Grid {
 		for _, vv := range v {
-			fmt.Printf("%d ", vv)
+			if vv == 0 {
+				fmt.Printf("× ")
+			} else {
+				fmt.Printf("  ")
+			}
+		}
+		fmt.Printf("\n")
+	}
+	fmt.Printf("gileGrid is: \n")
+	for _, v := range N.FillGrid {
+		for _, vv := range v {
+			if vv == 0 {
+				fmt.Printf("× ")
+			} else {
+				fmt.Printf("  ")
+			}
 		}
 		fmt.Printf("\n")
 	}
@@ -61,11 +81,37 @@ func (N *Nonogram) Display() {
 
 }
 
-// TODO buggzhou
-// 验证：
-// 1、二维数组是否符合某些条件
-// 2、二维数组和行列是否匹配
 func (N *Nonogram) Check() bool {
+	// 检查行
+	for i, row := range N.FillGrid {
+		if !equal(countConsecutive(row), N.Rows[i]) {
+			return false
+		}
+	}
+
+	// 检查列
+	for j := 0; j < len(N.FillGrid[0]); j++ {
+		col := make([]int, len(N.FillGrid))
+		for i := 0; i < len(N.FillGrid); i++ {
+			col[i] = N.FillGrid[i][j]
+		}
+		if !equal(countConsecutive(col), N.Cols[j]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func equal(a, b []int) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range a {
+		if a[i] != b[i] {
+			return false
+		}
+	}
 	return true
 }
 
@@ -194,4 +240,14 @@ func countConsecutive(array []int) []int {
 		result = append(result, count)
 	}
 	return result
+}
+
+func copyMatrix(matrix [][]int) [][]int {
+	n := len(matrix)
+	newMatrix := make([][]int, n)
+	for i := range matrix {
+		newMatrix[i] = make([]int, len(matrix[i]))
+		copy(newMatrix[i], matrix[i])
+	}
+	return newMatrix
 }
