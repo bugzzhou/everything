@@ -17,7 +17,7 @@ type Nonogram struct {
 	Rows     [][]int `json:"rows"`
 	Cols     [][]int `json:"cols"`
 	Grid     [][]int `json:"grid"`
-	FillGrid [][]int `json:"fillGrid"`
+	FillGrid [][]int `json:"gridData"`
 }
 
 // 声明的接口类

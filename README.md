@@ -26,7 +26,12 @@ gantt
 
     section 4. Nonogram
     初次提交 :b1, 2024-06-14, 1d
+    前后端实现 :b2, 2024-06-19, 1d
 
     section 5. shudu
     想法提出 :b1, 2024-06-14, 1d
+    实现 :b2, 2024-06-17, 1d
+
+    section 6. tetris
+    ai生成 :b1, 2024-06-18, 1d
 ```

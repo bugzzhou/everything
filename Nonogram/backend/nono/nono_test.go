@@ -10,4 +10,12 @@ func TestGen(t *testing.T) {
 	a.Gen("normal")
 	a.Display()
 	fmt.Printf("%v\n", a.Check())
+
+	a.Gen("normal")
+	a.Display()
+	fmt.Printf("%v\n", a.Check())
+
+	a.Gen("normal")
+	a.Display()
+	fmt.Printf("%v\n", a.Check())
 }
